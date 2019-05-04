@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import model.enums.Escala;
 
 public class Jogador implements JsonFormatter {
-	private Integer id;
+	Integer id;
 	private String nome;		
 	private String posicao;		
 	private Escala folego;		

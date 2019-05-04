@@ -9,15 +9,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Estatistica;
 import model.Jogador;
-import model.enums.Escala;
 
-public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
+public class EstatisticaDAO implements GenericDAO<Estatistica, Integer> {
 	static final String ARQUIVO = "estatistica.txt";
 	static final String SEQUENCE = "sequence_estatistica.txt";
 
+	JogadorDAO jogadorDAO = new JogadorDAO();
+	
 	@Override
-	public Jogador get(Integer id) {
+	public Estatistica get(Integer id) {
 		Estatistica retorno = null;
 		Estatistica j = null;
 
@@ -29,7 +31,10 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 
 				j = new Estatistica();
 				j.setId(Integer.parseInt(dados[0]));
-				j.setNome(dados[1]);
+				j.setJogador(jogadorDAO.get(Integer.parseInt(dados[1])));
+				j.setPasseDeBola(Integer.parseInt(dados[2]));
+				j.setGols(Integer.parseInt(dados[3]));
+				j.setAssistencias(Integer.parseInt(dados[4]));
 
 				if (id.equals(j.getId())) {
 					retorno = j;
@@ -66,10 +71,12 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 				bufferOutSequence.write(Integer.toString(generatedId + 1));
 				bufferOutSequence.flush();
 			}
-
-			String separadorDeAtributo = ";";
+		String separadorDeAtributo = ";";
 			bufferOutEstatistica.write(generatedId + separadorDeAtributo);
-			bufferOutEstatistica.write(t.getNome() + separadorDeAtributo);
+			bufferOutEstatistica.write(t.getJogador().getId() + separadorDeAtributo);
+			bufferOutEstatistica.write(t.getPasseDeBola() + separadorDeAtributo);
+			bufferOutEstatistica.write(t.getGols() + separadorDeAtributo);
+			bufferOutEstatistica.write(t.getAssistencias()+"");
 			bufferOutEstatistica.write(System.getProperty("line.separator"));
 			bufferOutEstatistica.flush();
 
@@ -80,7 +87,7 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 	}
 
 	@Override
-	public void update(Jogador t) throws NumberFormatException, IOException {
+	public void update(Estatistica t) throws NumberFormatException, IOException {
 		List<Estatistica> estatistica = getAll();
 		int index = estatistica.indexOf(t);
 		if (index != -1) {
@@ -91,7 +98,7 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 	}
 
 	@Override
-	public void delete(Jogador t) throws NumberFormatException, IOException {
+	public void delete(Estatistica t) throws NumberFormatException, IOException {
 
 		List<Estatistica> estatistica = getAll();
 		int index = estatistica.indexOf(t);
@@ -103,7 +110,7 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 	}
 
 	@Override
-	public List<Jogador> getAll() throws FileNotFoundException, NumberFormatException, IOException {
+	public List<Estatistica> getAll() throws FileNotFoundException, NumberFormatException, IOException {
 		List<Estatistica> estatistica = new ArrayList<Estatistica>();
 		Estatistica j = null;
 		BufferedReader buffer_entrada = new BufferedReader(new FileReader(ARQUIVO));
@@ -114,7 +121,10 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 
 			j = new Estatistica();
 			j.setId(Integer.parseInt(dados[0]));
-			j.setNome(dados[1]);
+			j.setJogador(jogadorDAO.get(Integer.parseInt(dados[1])));
+			j.setPasseDeBola(Integer.parseInt(dados[2]));
+			j.setGols(Integer.parseInt(dados[3]));
+			j.setAssistencias(Integer.parseInt(dados[4]));
 
 			estatistica.add(j);
 		}
@@ -127,12 +137,17 @@ public class EstatisticaDAO implements GenericDAO<Jogador, Integer> {
 		BufferedWriter buffer_saida = new BufferedWriter(new FileWriter(ARQUIVO, false));
 		String separador = ";";
 		for (Estatistica j : list) {
+			
+		
 			buffer_saida.write(j.getId() + separador);
-			buffer_saida.write(j.getNome() + separador);
+			buffer_saida.write(j.getJogador().getId() + separador);
+			buffer_saida.write(j.getPasseDeBola() + separador);
+			buffer_saida.write(j.getGols() + separador);
+			buffer_saida.write(j.getAssistencias() + separador);
 			buffer_saida.write(System.getProperty("line.separator"));
 			buffer_saida.flush();
 		}
 		buffer_saida.close();
 	}
-
+	
 }

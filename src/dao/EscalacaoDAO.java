@@ -13,11 +13,13 @@ import model.Escalacao;
 import model.Jogador;
 import model.enums.Escala;
 
-public class EscalacaoDAO implements GenericDAO<Escalacao, Integer> {
+public class EscalacaoDAO {
 	static final String ARQUIVO = "escalacao.txt";
 	static final String SEQUENCE = "sequence_escalacao.txt";
 
-	@Override
+	JogadorDAO jogadorDAO = new JogadorDAO();
+
+	
 	public Escalacao get(Integer id) {
 		Escalacao retorno = null;
 		Escalacao j = null;
@@ -30,8 +32,17 @@ public class EscalacaoDAO implements GenericDAO<Escalacao, Integer> {
 
 				j = new Escalacao();
 				j.setId(Integer.parseInt(dados[0]));
-				j.setId(dados[1]);
+				j.setFinalizado(Boolean.parseBoolean(dados[1]));
 
+				if (dados.length > 1 && !dados[1].equals("")) {
+					String[] idJogadores = dados[2].split("-");
+					for (String s : idJogadores) {
+						Integer idJogador = Integer.parseInt(s);
+						Jogador jogador = jogadorDAO.get(idJogador);
+
+						j.getListaJogador().add(jogador);
+					}
+				}
 				if (id.equals(j.getId())) {
 					retorno = j;
 					break;
@@ -39,11 +50,14 @@ public class EscalacaoDAO implements GenericDAO<Escalacao, Integer> {
 			}
 
 			return null;
+		} catch (Exception e) {
+			System.out.println("ERRO ao ler a Estacalacao '" + j.getId() + "' do disco rígido!");
+			e.printStackTrace();
 		}
+		return retorno;
 	}
 
 	@SuppressWarnings("resource")
-	@Override
 	public void add(Escalacao t) {
 
 		try {
@@ -70,6 +84,17 @@ public class EscalacaoDAO implements GenericDAO<Escalacao, Integer> {
 			String separadorDeAtributo = ";";
 			bufferOutEscalacao.write(generatedId + separadorDeAtributo);
 			bufferOutEscalacao.write(t.getId() + separadorDeAtributo);
+			
+			for(int i = 0; i<t.getListaJogador().size();i++) {
+				Jogador jogador = t.getListaJogador().get(i);
+				if (i != t.getListaJogador().size() - 1) {
+					bufferOutEscalacao.write(jogador.getId() + "-");
+				} else {
+					bufferOutEscalacao.write(jogador.getId());
+				}
+				
+			}
+			
 			bufferOutEscalacao.write(System.getProperty("line.separator"));
 			bufferOutEscalacao.flush();
 
@@ -79,31 +104,19 @@ public class EscalacaoDAO implements GenericDAO<Escalacao, Integer> {
 		}
 	}
 
-	@Override
 	public void update(Escalacao t) throws NumberFormatException, IOException {
-		List<Escalacao> escalacao = getAll();
-		int index = escalacao.indexOf(t);
-		if (index != -1) {
-			escalacao.set(index, t);
-			saveToFile(escalacao);
-		}
+			saveToFile(t);
+		
 	}
 
-	// TODO Auto-generated method stub
 
-	@Override
-	public void delete(Escalacao t) throws NumberFormatException, IOException {
-		List<Escalacao> escalacao = getAll();
-		int index = escalacao.indexOf(t);
-		if (index != -1) {
-			escalacao.remove(index);
-			saveToFile(escalacao);
-		}
-		// TODO Auto-generated method stub
+//	public void delete(Escalacao t) throws NumberFormatException, IOException {
+//		List<Escalacao> escalacao = getAll();
+//			saveToFile(t);
+//		}
+//
+//	}
 
-	}
-
-	@Override
 	public List<Escalacao> getAll() throws FileNotFoundException, NumberFormatException, IOException {
 
 		List<Escalacao> escalacao = new ArrayList<Escalacao>();
@@ -116,22 +129,42 @@ public class EscalacaoDAO implements GenericDAO<Escalacao, Integer> {
 
 			j = new Escalacao();
 			j.setId(Integer.parseInt(dados[0]));
-			escalacao.add(j);
-		}
+			j.setFinalizado(Boolean.parseBoolean(dados[1]));
 
-		buffer_entrada.close();
+			if (dados.length > 1 && !dados[1].equals("")) {
+				String[] idJogadores = dados[2].split("-");
+				for (String s : idJogadores) {
+					Integer idJogador = Integer.parseInt(s);
+					Jogador jogador = jogadorDAO.get(idJogador);
+
+					j.getListaJogador().add(jogador);
+				}
+
+			}
+
+			buffer_entrada.close();
+		}
 		return escalacao;
+
 	}
 
-	public void saveToFile(List<Escalacao> list) throws IOException {
+	public void saveToFile(Escalacao t) throws IOException {
 		BufferedWriter buffer_saida = new BufferedWriter(new FileWriter(ARQUIVO, false));
 		String separador = ";";
-		for (Escalacao j : list) {
-			buffer_saida.write(j.getId() + separador);
-			buffer_saida.write(System.getProperty("line.separator"));
-			buffer_saida.flush();
+		buffer_saida.write(t.getId() + separador);
+		
+		for(int i = 0; i<t.getListaJogador().size();i++) {
+			Jogador jogador = t.getListaJogador().get(i);
+			if (i != t.getListaJogador().size() - 1) {
+				buffer_saida.write(jogador.getId() + "-");
+			} else {
+				buffer_saida.write(jogador.getId());
+			}
+			
 		}
+		buffer_saida.write(System.getProperty("line.separator"));
+		
+		buffer_saida.flush();
 		buffer_saida.close();
 	}
-
 }

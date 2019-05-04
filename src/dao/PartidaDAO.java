@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Jogador;
+import model.Partida;
 import model.enums.Escala;
 
 public class PartidaDAO implements GenericDAO<Partida, Integer> {
@@ -30,8 +31,9 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 
 				j = new Partida();
 				j.setId(Integer.parseInt(dados[0]));
-				j.setNome(dados[1]);
-				j.setPosicao(dados[2]);
+				/*
+				 * j.setNome(dados[1]); j.setPosicao(dados[2]);
+				 */
 
 				if (id.equals(j.getId())) {
 					retorno = j;
@@ -71,7 +73,7 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 
 			String separadorDeAtributo = ";";
 			bufferOutPartida.write(generatedId + separadorDeAtributo);
-			bufferOutPartida.write(t.getNome() + separadorDeAtributo);
+			bufferOutPartida.write(t.getId() + separadorDeAtributo);
 			bufferOutPartida.write(System.getProperty("line.separator"));
 			bufferOutPartida.flush();
 
@@ -84,10 +86,10 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 	@Override
 	public void update(Partida t) throws NumberFormatException, IOException {
 		List<Partida> Partida = getAll();
-		int index = partida.indexOf(t);
+		int index = Partida.indexOf(t);
 		if (index != -1) {
-			partida.set(index, t);
-			saveToFile(partida);
+			Partida.set(index, t);
+			saveToFile(Partida);
 		}
 	}
 
@@ -113,7 +115,7 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 
 			j = new Partida();
 			j.setId(Integer.parseInt(dados[0]));
-			j.setNome(dados[1]);
+			//j.setId(dados[1]);
 			partida.add(j);
 		}
 
@@ -121,14 +123,14 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 		return partida;
 	}
 
-}
+
 
 	public void saveToFile(List<Partida> list) throws IOException {
 		BufferedWriter buffer_saida = new BufferedWriter(new FileWriter(ARQUIVO, false));
 		String separador = ";";
 		for (Partida j : list) {
 			buffer_saida.write(j.getId() + separador);
-			buffer_saida.write(j.getNome() + separador);
+			buffer_saida.write(j.getEstatisticasJogador() + separador);
 			buffer_saida.write(System.getProperty("line.separator"));
 			buffer_saida.flush();
 		}
