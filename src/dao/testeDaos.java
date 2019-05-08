@@ -12,26 +12,32 @@ public class testeDaos {
 
 		JogadorDAO jog = new JogadorDAO();
 		estatistica.setJogador(jog.get(3));
-		estatistica.setAssistencias(67);
-		estatistica.setGols(988);
-		estatistica.setPasseDeBola(9994);
-		estatistica.setId(1);
+		estatistica.setAssistencias(99);
+		estatistica.setGols(777);
+		estatistica.setPasseDeBola(888);
+		estatistica.setId(null);
 
 		EstatisticaDAO dao = new EstatisticaDAO();
 		
 		
 		try {
 //			dao.add(estatistica);
-//			dao.update(estatistica);
+			dao.update(estatistica);//IO necessário para esse tipo método.
 //			dao.delete(estatistica);
 //			System.out.println(dao.get(2).toJson().toString());
 //			List<Estatistica> lista = dao.getAll();
 //			for(Estatistica e : lista) {
 //				System.out.println(e.toJson().toString());
 //			}
-		} catch (NumberFormatException e) {
+		} catch (NumberFormatException | IOException e ) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		
+		
+		
 	
 	
 	

@@ -16,6 +16,7 @@ import model.enums.Escala;
 public class PartidaDAO implements GenericDAO<Partida, Integer> {
 	static final String ARQUIVO = "partida.txt";
 	static final String SEQUENCE = "sequence_partida.txt";
+	private EstatisticaDAO estatisticaDAO = new EstatisticaDAO();
 
 	@Override
 	public Partida get(Integer id) {
