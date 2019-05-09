@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 
@@ -11,6 +12,10 @@ public class Partida implements JsonFormatter{
 	
 	List<Estatistica> estatisticasJogador;
 
+	public Partida() {
+		this.estatisticasJogador = new ArrayList<Estatistica>();
+	}
+	
 	public Integer getId() {
 		return id;
 	}
