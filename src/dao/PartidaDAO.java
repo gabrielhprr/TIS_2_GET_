@@ -37,7 +37,7 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 				p.setId(Integer.parseInt(dados[0]));
 				List<Estatistica> estatisticasJogador = new ArrayList<Estatistica>();
 				
-				if(dados.length > 1 && !dados[1].equals("")) {
+				if(dados.length < 1 && !dados[1].equals("")) {
 					String [] idJogadores = dados[2].split("-");
 					for(String s : idJogadores) {
 						Integer idEstatistica = Integer.parseInt(s);
@@ -77,7 +77,7 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 				if (i != t.getEstatisticasJogador().size() - 1) {
 					bufferOutEstatisticas.write(estatisticas.getId() + "-");
 				} else {
-					bufferOutEstatisticas.write(estatisticas.getId());
+					bufferOutEstatisticas.write(estatisticas.getId()+"");
 				}  
 			}
 			

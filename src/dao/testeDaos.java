@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,17 +44,40 @@ public class testeDaos {
 		
 		
 		//TESTE DE PARTIDA
+		
+		//no GETALL não está puxando pois está com erro no Json
+		//no DELETE está deixando o ID.
+		
+		
+		
 		Partida partida = new Partida();
 		PartidaDAO daopartida = new PartidaDAO();
 		
-		partida.setId(null);
+		partida.setId(1);
 		partida.getEstatisticasJogador().add(dao.get(8));
-		partida.getEstatisticasJogador().add(dao.get(2));
+		partida.getEstatisticasJogador().add(dao.get(6));
 		partida.getEstatisticasJogador().add(dao.get(5));
 		
 		daopartida.add(partida);
 		
-		System.out.println(daopartida.get(1).toJson().toString());
+		
+		try {
+			System.out.println(daopartida.getAll().toString());
+//			daopartida.delete(partida);
+//			daopartida.update(partida);
+		
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		//System.out.println(daopartida.get(1).toJson().toString());
 		
 		
 		

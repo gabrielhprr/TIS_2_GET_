@@ -6,7 +6,7 @@ public class Campeonato {
 	private int jogos;
 	private int cont;
 	
-	 //List<Partida> partidas;
+	 List<Partida> partidas;
 
 	
 	
