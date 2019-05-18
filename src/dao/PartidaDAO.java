@@ -67,6 +67,23 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 		try {
 			BufferedReader bufferInSequence = new BufferedReader(new FileReader(SEQUENCE));
 			BufferedWriter bufferOutEstatisticas = new BufferedWriter(new FileWriter(ARQUIVO, true));
+			Integer generatedId;
+			String linha = bufferInSequence.readLine();
+			if (linha != null) {
+				generatedId = Integer.parseInt(linha);
+				bufferInSequence.close();
+				
+				BufferedWriter bufferOutSequence = new BufferedWriter(new FileWriter(SEQUENCE, false));
+				bufferOutSequence.write(Integer.toString(generatedId + 1));
+				bufferOutSequence.flush();
+			} else {
+				generatedId = 1;
+				
+				BufferedWriter bufferOutSequence = new BufferedWriter(new FileWriter(SEQUENCE, false));
+				bufferOutSequence.write(Integer.toString(generatedId + 1));
+				bufferOutSequence.flush();
+			}
+			
 			
 			String separadorDeAtributo = ";";
 			bufferOutEstatisticas.write(t.getId() + separadorDeAtributo);
@@ -81,9 +98,9 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 				}  
 			}
 			
+			
 			bufferOutEstatisticas.write(System.getProperty("line.separator"));
-			bufferOutEstatisticas.flush();
-			bufferOutEstatisticas.close();
+
 		} catch (Exception e) {
 			System.out.println("Erro ao gravar a Partida.");
 			e.printStackTrace();
