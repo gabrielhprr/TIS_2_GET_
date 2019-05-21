@@ -17,33 +17,33 @@ public class testeDaos {
 	public static void main(String[] args) {
 		
 		//TESTE DE ESTATISTICA
-		Estatistica estatistica = new Estatistica();
-
-		JogadorDAO jog = new JogadorDAO();
-		estatistica.setJogador(jog.get(3));
-		estatistica.setAssistencias(99);
-		estatistica.setGols(1111111);
-		estatistica.setPasseDeBola(888);
-		estatistica.setId(null);
-
+//		Estatistica estatistica = new Estatistica();
+//
+//		JogadorDAO jog = new JogadorDAO();
+//		estatistica.setJogador(jog.get(3));
+//		estatistica.setAssistencias(99);
+//		estatistica.setGols(1111111);
+//		estatistica.setPasseDeBola(888);
+//		estatistica.setId(null);
+//
 		EstatisticaDAO dao = new EstatisticaDAO();
-		dao.add(estatistica);
-
-	
-		try {
-			dao.add(estatistica);
-			//dao.update(estatistica);//IO necessário para esse tipo método.
-			//dao.delete(estatistica);
-			System.out.println(dao.get(11).toJson().toString());
-			List<Estatistica> lista = dao.getAll();
-			for(Estatistica e : lista) {
-				System.out.println(e.toJson().toString());
-			}
-		} catch (NumberFormatException | IOException e ) {
-			e.printStackTrace();
-		}
-		
-		
+//		dao.add(estatistica);
+//
+//	
+//		try {
+//			dao.add(estatistica);
+//			//dao.update(estatistica);//IO necessário para esse tipo método.
+//			//dao.delete(estatistica);
+//			System.out.println(dao.get(11).toJson().toString());
+//			List<Estatistica> lista = dao.getAll();
+//			for(Estatistica e : lista) {
+//				System.out.println(e.toJson().toString());
+//			}
+//		} catch (NumberFormatException | IOException e ) {
+//			e.printStackTrace();
+//		}
+//		
+//		
 		//TESTE DE PARTIDA
 		
 		//no GETALL não está puxando pois está com erro no Json
@@ -53,20 +53,22 @@ public class testeDaos {
 		
 		Partida partida = new Partida();
 		PartidaDAO daopartida = new PartidaDAO();
+		partida.setId(35);
+
 		
-		partida.setId(1);
-		partida.getEstatisticasJogador().add(dao.get(8));
-		partida.getEstatisticasJogador().add(dao.get(6));
-		partida.getEstatisticasJogador().add(dao.get(5));
-		
-		daopartida.add(partida);
+//		partida.setId(null);
+//		partida.getEstatisticasJogador().add(dao.get(12));
+//		partida.getEstatisticasJogador().add(dao.get(11));
+//		partida.getEstatisticasJogador().add(dao.get(18));
+//		
+//		daopartida.add(partida);
 		
 		
 		try {
-			System.out.println(daopartida.getAll().toString());
-//			daopartida.delete(partida);
+//			System.out.println(daopartida.getAll().toString());
+			daopartida.delete(partida);
 //			daopartida.update(partida);
-		
+//		
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (FileNotFoundException e) {
@@ -78,19 +80,9 @@ public class testeDaos {
 		
 		
 		
-		//System.out.println(daopartida.get(1).toJson().toString());
+//		System.out.println(daopartida.get(1).toJson().toString());
 		
 		
-		
-		
-		
-	
-	
-	
-	
-	
-	
-	
+//	}
 	}
-
 }

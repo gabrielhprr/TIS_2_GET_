@@ -29,17 +29,16 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 		try (BufferedReader buffer_entrada = new BufferedReader(new FileReader(ARQUIVO))) {
 			String linha;
 
-			
-			while((linha = buffer_entrada.readLine()) != null) {
-				String [] dados = linha.split(";");
-				
+			while ((linha = buffer_entrada.readLine()) != null) {
+				String[] dados = linha.split(";");
+
 				p = new Partida();
 				p.setId(Integer.parseInt(dados[0]));
 				List<Estatistica> estatisticasJogador = new ArrayList<Estatistica>();
-				
-				if(dados.length < 1 && !dados[1].equals("")) {
-					String [] idJogadores = dados[2].split("-");
-					for(String s : idJogadores) {
+
+				if (dados.length < 1 && !dados[1].equals("")) {
+					String[] idJogadores = dados[2].split("-");
+					for (String s : idJogadores) {
 						Integer idEstatistica = Integer.parseInt(s);
 
 						Estatistica estatistica = estatisticaDAO.get(idEstatistica);
@@ -72,43 +71,42 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 			if (linha != null) {
 				generatedId = Integer.parseInt(linha);
 				bufferInSequence.close();
-				
+
 				BufferedWriter bufferOutSequence = new BufferedWriter(new FileWriter(SEQUENCE, false));
 				bufferOutSequence.write(Integer.toString(generatedId + 1));
 				bufferOutSequence.flush();
+			
 			} else {
-				generatedId = 1;
 				
+				generatedId = 1;
 				BufferedWriter bufferOutSequence = new BufferedWriter(new FileWriter(SEQUENCE, false));
 				bufferOutSequence.write(Integer.toString(generatedId + 1));
 				bufferOutSequence.flush();
 			}
-			
-			
+
 			String separadorDeAtributo = ";";
-			bufferOutEstatisticas.write(t.getId() + separadorDeAtributo);
-			
-			for(int i = 0; i < t.getEstatisticasJogador().size(); i++) {
+			bufferOutEstatisticas.write(generatedId + separadorDeAtributo);
+
+			for (int i = 0; i < t.getEstatisticasJogador().size(); i++) {
 				Estatistica estatisticas = t.getEstatisticasJogador().get(i);
-				
+
 				if (i != t.getEstatisticasJogador().size() - 1) {
 					bufferOutEstatisticas.write(estatisticas.getId() + "-");
 				} else {
 					bufferOutEstatisticas.write(estatisticas.getId()+"");
-				}  
+				}
 			}
-			
-			
-			bufferOutEstatisticas.write(System.getProperty("line.separator"));
 
+			bufferOutEstatisticas.write(System.getProperty("line.separator"));
+			bufferOutEstatisticas.flush();
 		} catch (Exception e) {
 			System.out.println("Erro ao gravar a Partida.");
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
-	
+
 	public void update(Partida q) throws NumberFormatException, IOException {
 		List<Partida> partidas = getAll();
 		int index = partidas.indexOf(q);
@@ -116,8 +114,7 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 			partidas.set(index, q);
 			saveToFile(partidas);
 		}
-	}	
-
+	}
 
 	@Override
 	public void delete(Partida t) throws NumberFormatException, IOException {
@@ -148,29 +145,27 @@ public class PartidaDAO implements GenericDAO<Partida, Integer> {
 		return partida;
 	}
 
-
-
 	public void saveToFile(List<Partida> list) throws IOException {
-		
+
 		BufferedWriter buffer_saida = new BufferedWriter(new FileWriter(ARQUIVO, false));
 		String separador = ";";
 		for (Partida p : list) {
 			buffer_saida.write(p.getId() + separador);
-			
-			for(int i = 0; i < p.getEstatisticasJogador().size(); i++) {
+//			buffer_saida.flush();
+			for (int i = 0; i < p.getEstatisticasJogador().size(); i++) {
 				Estatistica jogador = p.getEstatisticasJogador().get(i);
-				
+
 				if (i != p.getEstatisticasJogador().size() - 1) {
 					buffer_saida.write(p.getId() + "-");
 				} else {
 					buffer_saida.write(jogador.getId());
 				}
 			}
-			
+
 			buffer_saida.write(System.getProperty("line.separator"));
 			buffer_saida.flush();
 		}
 		buffer_saida.close();
-		
+
 	}
 }

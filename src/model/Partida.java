@@ -36,7 +36,7 @@ public class Partida implements JsonFormatter{
 	public JSONObject toJson() {
 		JSONObject obj = new JSONObject();
 		obj.put("id", this.id);
-		obj.put("estatisticas", toJsonArray());
+		obj.put("estatisticas", this.estatisticasJogador.toArray());
 		return obj;
 	}
 	
