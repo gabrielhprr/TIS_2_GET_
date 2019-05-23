@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.Escalacao;
 import model.Estatistica;
 import model.Jogador;
 import model.Partida;
@@ -53,18 +54,18 @@ public class testeDaos {
 		
 		Partida partida = new Partida();
 		PartidaDAO daopartida = new PartidaDAO();
-		partida.setId(35);
-
-		
-//		partida.setId(null);
-//		partida.getEstatisticasJogador().add(dao.get(12));
-//		partida.getEstatisticasJogador().add(dao.get(11));
-//		partida.getEstatisticasJogador().add(dao.get(18));
+//		partida.setId(35);
+//
 //		
-//		daopartida.add(partida);
-		
-		
-		try {
+		partida.setId(3);
+		partida.getEstatisticasJogador().add(dao.get(4));
+		partida.getEstatisticasJogador().add(dao.get(5));
+		partida.getEstatisticasJogador().add(dao.get(6));
+//		
+		daopartida.add(partida);
+//		
+//		
+		/*try {
 //			System.out.println(daopartida.getAll().toString());
 			daopartida.delete(partida);
 //			daopartida.update(partida);
@@ -75,14 +76,30 @@ public class testeDaos {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		
 		
 //		System.out.println(daopartida.get(1).toJson().toString());
-		
+	
 		
 //	}
+		
+		
+//		TESTE ESCALAÇÃO
+		
+//		EscalacaoDAO daoEscalacao = new EscalacaoDAO();
+//		Escalacao escalacao = new Escalacao();
+//		JogadorDAO daoJogador = new JogadorDAO();
+//		
+//		escalacao.setId(3);
+//		escalacao.getListaJogador().add(daoJogador.get(3));
+//		daoEscalacao.add(escalacao);
+		
+		
+		
+		
+		
 	}
 }
